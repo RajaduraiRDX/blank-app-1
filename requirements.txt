@@ -1,1 +1,6 @@
-streamlit
+Flask>=3.0
+gunicorn>=22.0
+opencv-python>=4.8
+numpy>=1.26
+openpyxl>=3.1
+reportlab>=4.0

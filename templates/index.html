@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AIMS Research Console</title>
+    <link rel="stylesheet" href="/static/styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <div>
+          <p class="eyebrow">Civil Engineering Lab</p>
+          <h1>AIMS Research Console</h1>
+        </div>
+
+        <form id="analysisForm" class="control-stack">
+          <label id="dropZone" class="drop-zone">
+            <input id="imageInput" name="image" type="file" accept="image/*" required>
+            <span class="drop-icon">+</span>
+            <strong>Drop aggregate surface image</strong>
+            <small>Top-down square face photo or scanner image</small>
+          </label>
+
+          <div class="field">
+            <label for="analysisMode">Analysis mode</label>
+            <select id="analysisMode" name="analysis_mode">
+              <option value="surface_texture">Surface texture only</option>
+              <option value="morphology">Particle morphology</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="calibration">Calibration (mm / pixel)</label>
+            <input id="calibration" name="calibration" type="number" min="0" step="0.0001" placeholder="Optional">
+          </div>
+
+          <div class="field morphology-control">
+            <label for="minArea">Minimum particle area (px2)</label>
+            <input id="minArea" name="min_area" type="number" min="1" value="250">
+          </div>
+
+          <div class="field morphology-control">
+            <label for="thresholdMode">Thresholding</label>
+            <select id="thresholdMode" name="threshold_mode">
+              <option value="otsu">Otsu</option>
+              <option value="adaptive">Adaptive</option>
+            </select>
+          </div>
+
+          <label class="toggle morphology-control">
+            <input id="multiParticle" name="multi_particle" type="checkbox">
+            <span>Multi-particle watershed segmentation</span>
+          </label>
+
+          <button class="primary-button" type="submit">Analyze image</button>
+        </form>
+
+        <div class="download-row">
+          <button data-export="csv" disabled>CSV</button>
+          <button data-export="xlsx" disabled>Excel</button>
+          <button data-export="pdf" disabled>PDF</button>
+        </div>
+      </aside>
+
+      <section class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="analysisEyebrow">Square aggregate surface texture</p>
+            <h2 id="statusTitle">Ready for surface texture analysis</h2>
+          </div>
+          <button id="themeToggle" class="ghost-button" type="button">Dark mode</button>
+        </header>
+
+        <section class="metrics-grid" id="metricCards">
+          <article><span>Texture Index</span><strong>0</strong></article>
+          <article><span>Roughness</span><strong>0</strong></article>
+          <article><span>Entropy</span><strong>0</strong></article>
+          <article><span>Contrast</span><strong>0</strong></article>
+        </section>
+
+        <section class="image-grid" id="imageGrid">
+          <figure><img id="previewImage" alt="Original image preview"><figcaption>Original preview</figcaption></figure>
+          <figure class="mode-surface"><img data-view="grayscale" alt="Grayscale view"><figcaption>Grayscale</figcaption></figure>
+          <figure class="mode-surface"><img data-view="surface_roi" alt="Surface region of interest"><figcaption>Surface ROI</figcaption></figure>
+          <figure class="mode-surface"><img data-view="illumination_corrected" alt="Illumination corrected surface"><figcaption>Corrected surface</figcaption></figure>
+          <figure class="mode-surface"><img data-view="gradient_map" alt="Surface gradient map"><figcaption>Gradient map</figcaption></figure>
+          <figure class="mode-surface"><img data-view="laplacian_map" alt="Laplacian texture map"><figcaption>Laplacian map</figcaption></figure>
+          <figure class="mode-surface"><img data-view="lbp_map" alt="Local binary pattern texture map"><figcaption>LBP map</figcaption></figure>
+          <figure class="mode-morph"><img data-view="binary" alt="Binary segmentation"><figcaption>Binary / shape view</figcaption></figure>
+          <figure class="mode-morph"><img data-view="contour" alt="Contour overlay"><figcaption>Contour</figcaption></figure>
+          <figure class="mode-morph"><img data-view="convex_hull" alt="Convex hull"><figcaption>Convex hull</figcaption></figure>
+          <figure class="mode-morph"><img data-view="bounding_feret" alt="Bounding box and feret"><figcaption>Bounding / Feret</figcaption></figure>
+          <figure class="mode-morph"><img data-view="major_minor_axes" alt="Major and minor axes"><figcaption>Major / minor axes</figcaption></figure>
+          <figure class="mode-morph"><img data-view="angular_corners" alt="Angular corner detection"><figcaption>Angular corners</figcaption></figure>
+        </section>
+
+        <section class="analysis-layout">
+          <div class="table-wrap">
+            <div class="section-head">
+              <h3 id="tableTitle">Surface Texture Measurements</h3>
+              <span id="unitBadge">px units</span>
+            </div>
+            <table>
+              <thead id="measurementHead">
+                <tr></tr>
+              </thead>
+              <tbody id="measurementRows"></tbody>
+            </table>
+          </div>
+
+          <div class="charts">
+            <div class="section-head">
+              <h3>Distributions</h3>
+              <span>live summary</span>
+            </div>
+            <canvas id="chartCanvas" width="720" height="360"></canvas>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

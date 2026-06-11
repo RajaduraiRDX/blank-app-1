@@ -1,19 +1,45 @@
-# 🎈 Blank app template
+# AIMS Research Console
 
-A simple Streamlit app template for you to modify!
+A Flask-based Aggregate Image Measurement System for civil engineering research.
 
-[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://blank-app-template.streamlit.app/)
+## Run Locally
 
-### How to run it on your own machine
+```bash
+pip install -r requirements.txt
+python app.py
+```
 
-1. Install the requirements
+Open `http://127.0.0.1:5000`.
 
-   ```
-   $ pip install -r requirements.txt
-   ```
+## Deploy as a Web Link
 
-2. Run the app
+The easiest handoff is to deploy it as a Flask web service so collaborators can open a normal URL.
 
-   ```
-   $ streamlit run streamlit_app.py
-   ```
+### Render
+
+1. Put this project in a GitHub repository.
+2. In Render, create a new Web Service from that repository.
+3. Use these settings:
+   - Runtime: Python 3
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `gunicorn app:app`
+4. Deploy. Render will give you an `onrender.com` URL.
+
+The included `Procfile` also contains the same production start command.
+
+## Send as a ZIP
+
+If the other person will run it on their own computer, zip the project folder and ask them to run:
+
+```bash
+pip install -r requirements.txt
+python app.py
+```
+
+Then they can open `http://127.0.0.1:5000`.
+
+## Notes for Research Use
+
+- Uploaded files are stored in `work/uploads`.
+- Generated analysis results are stored in `outputs/results`.
+- For public deployments, add authentication before sharing sensitive lab images.
